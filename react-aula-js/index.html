@@ -3,27 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste Simples de React</title>
+    <title>Formularium React</title>
     <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
     <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
     <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
     <style>
-      body{
-        color: white;
-        font: normal 20pt arial;
+      #form {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
-      #hello{
-        width: 500px;
-        height: 500px;
-        background-color: green;
+
+      #form h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
       }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      input[type="text"], input[type="email"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 18px;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-      ReactDOM.render(<div id="hello">Hello World!</div>, document.getElementById('root'));
+      class Formularium extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            nome: '',
+            email: '',
+            mensagem: ''
+          };
+        }
+
+        handleInputChange = (event) => {
+          const target = event.target;
+          const value = target.type === 'checkbox' ? target.checked : target.value;
+          const name = target.name;
+
+          this.setState({
+            [name]: value
+          });
+        }
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          console.log(this.state);
+        }
+
+        render() {
+          return (
+            <div id="form">
+              <h1>Formularium React</h1>
+              <form onSubmit={this.handleSubmit}>
+                <label>
+                  Nomen:
+                  <input type="text" name="nome" value={this.state.nome} onChange={this.handleInputChange} />
+                </label>
+                <br />
+                <label>
+                  Email:
+                  <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange} />
+                </label>
+                <br />
+                <label>
+                  Mensagem:
+                  <textarea name="mensagem" value={this.state.mensagem} onChange={this.handleInputChange} />
+                </label>
+                <br />
+                <input type="submit" value="Submit" />
+              </form>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<Formularium />, document.getElementById('root'));
     </script>
     
 </body>
